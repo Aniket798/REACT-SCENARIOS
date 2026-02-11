@@ -6,6 +6,7 @@ function App() {
   const [count, setCount] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     console.log("Component mounted");
@@ -33,6 +34,10 @@ function App() {
   fetchUsers()
 }, [])
 
+const filteredUsers = users.filter(user =>
+  user.name.toLowerCase().includes(search.toLowerCase())
+)
+
   if(loading)
     return <h2>Loading users...</h2>
     if(error)
@@ -40,6 +45,24 @@ function App() {
 
   return (
     <div>
+    <div>
+      <h1>User List</h1>
+
+      <input
+        type="text"
+        placeholder="Search users..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <ul>
+        {filteredUsers.map(user => (
+          <li key={user.id}>
+            {user.name} – {user.email}
+          </li>
+        ))}
+      </ul>
+    </div>
     <div>
       <h1>useEffect - Run Once</h1>
       <p>Count : {count}</p>
